@@ -146,6 +146,7 @@ function App() {
         <h1 className="uppercase font-bold text-2xl text-slate-100 font-poppins">
           login your account
         </h1>
+        <a href="Menu.jsx">pindah ke menu jsx</a>
         <p className="capitalize text-xs font-normal text-gray-700 px-10 block font-poppins">
           make a experience in biking kedunglo team
         </p>
