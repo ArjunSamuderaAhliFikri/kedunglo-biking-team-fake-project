@@ -1,10 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/App.jsx', './src/Menu.jsx'],
+  content: ['./src/**.jsx', './src/components/**.jsx'],
   theme: {
     extend: {
       fontFamily: {
-        poppins: ['Poppins', 'sans-serif'],
+        'poppins': ['Poppins', 'sans-serif'],
       },
       colors: {
         'gradient-primary': '#FFBB0E',
