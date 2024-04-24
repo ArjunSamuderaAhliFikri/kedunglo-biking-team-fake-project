@@ -17,5 +17,5 @@ export default function BioUser() {
             </div>
 
         </section>
-    )
+    );
 }

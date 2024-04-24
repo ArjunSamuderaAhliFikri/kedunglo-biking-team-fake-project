@@ -1,4 +1,7 @@
 import { useState } from "react";
+const menus = [
+    {name: 'home', isActived: true},
+]
 export default function Menu() {
     return (
         <section className="mx-auto">
@@ -30,8 +33,11 @@ export default function Menu() {
                         <img className="w-full h-full transition-all duration-300 group-hover:scale-95 group-hover:opacity-85" src="../public/coffee mocca.jpg" alt="" />
                     </li>
                 </ul>
+
+                <div className="bg-red-500 rounded-full p-2"></div>
             </div>
             </div>
         </section>
+        
     )
 }
