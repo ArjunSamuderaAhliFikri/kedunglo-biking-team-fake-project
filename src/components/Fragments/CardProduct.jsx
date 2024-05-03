@@ -1,4 +1,8 @@
-const CardProduct = ({source, title, description, price, onHandleClickProduct}) => {
+const CardProduct = ({source, title, description, price, addProductUser, id, handleAddProductUser}) => {
+    const handleClickProduct = () => {
+        handleAddProductUser([...addProductUser, {id, title,description, price, source}]);
+        console.log(addProductUser);
+    }
     return (
         <div className="group w-full overflow-hidden">
             <div className="flex flex-col justify-center items-center bg-slate-200 w-full max-w-[250px] rounded-md overflow-hidden transition-all duration-150 group-hover:cursor-pointer group-hover:scale-95 group-hover:opacity-80">
@@ -9,7 +13,7 @@ const CardProduct = ({source, title, description, price, onHandleClickProduct}) 
                     </div>
                     <div className="flex justify-between items-center w-[100%]">
                         <h3 className="font-inter text-slate-900 capitalize text-md ml-1 font-semibold">rp {price}</h3>
-                        <button onClick={onHandleClickProduct} className="w-[50%] bg-sky-500 py-1 my-2 mx-auto rounded-md capitalize font-inter text-slate-100 font-semibold transition-all duration-150 hover:bg-sky-700" type="button">add to cart</button>
+                        <button onClick={handleClickProduct} className="w-[50%] bg-sky-500 py-1 my-2 mx-auto rounded-md capitalize font-inter text-slate-100 font-semibold transition-all duration-150 hover:bg-sky-700" type="button">add to cart</button>
                     </div>
             </div>
         </div>
