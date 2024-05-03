@@ -16,6 +16,7 @@ const KedungloBikingShop = () => {
 
     const handleChangeSearchInput = (e) => {
         setQuery(e);
+        console.log(searchProducts);
     }
 
     const handleCloseKeranjang = () => {
