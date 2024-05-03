@@ -1,10 +1,11 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ['./src/**.jsx', './src/components/**.jsx'],
+  content: ['./src/**.jsx', './src/components/**.jsx', './src/components/Elements/**.jsx','./src/components/Layouts/**.jsx','./src/components/Fragments/**.jsx','./src/Pages/**.jsx'],
   theme: {
     extend: {
       fontFamily: {
         'poppins': ['Poppins', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
       },
       colors: {
         'gradient-primary': '#FFBB0E',
@@ -17,4 +18,3 @@ export default {
   },
   plugins: [],
 }
-
