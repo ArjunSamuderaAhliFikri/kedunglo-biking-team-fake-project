@@ -74,6 +74,7 @@ const KedungloBikingShop = () => {
     }, [addProductUser]);
     return (
         <main className="relative overflow-x-hidden">
+            <input type="text" placeholder="efefe" name="" id="" />
         <NavbarKedungloBikingShop />
         <CarousellContainer />
             <section className="flex flex-col gap-5 w-full px-5 bg-slate-300 justify-center items-center">
