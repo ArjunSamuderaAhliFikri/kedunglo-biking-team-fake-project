@@ -1,4 +1,5 @@
 export function handleSearchProducts(cartProducts, query) {
+    if(query === '') return 
     return cartProducts.filter((product) => product.title.toLowerCase().includes(query.toLowerCase()));
 }
 

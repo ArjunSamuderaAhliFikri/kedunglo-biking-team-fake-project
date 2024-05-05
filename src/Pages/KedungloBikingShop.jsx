@@ -4,20 +4,14 @@ import CarousellContainer from "../components/Fragments/CarousellContainer";
 import SearchSection from "../components/Layouts/SearchSection";
 import ProductsBikeCard from "../components/Elements/ProductsBikeCard";
 import AllProducts from "../components/Layouts/AllProducts";
-import { cartProducts, handleSearchProducts } from "../js/cartProducts";
+import { cartProducts } from "../js/cartProducts";
 const KedungloBikingShop = () => {
     const [addProductUser, setAddProductUser] = useState([]);
     const [currentProduct, setCurrentProduct] = useState(null);
     const [totalPrice, setTotalPrice] = useState(0);
     const [query, setQuery] = useState('');
-    const searchProducts = handleSearchProducts(cartProducts, query);
     const manyProduct = useRef(null);
     const keranjang = useRef(null);
-
-    const handleChangeSearchInput = (e) => {
-        setQuery(e);
-        console.log(searchProducts);
-    }
 
     const handleCloseKeranjang = () => {
         keranjang.current.classList.add('hidden');
@@ -42,7 +36,7 @@ const KedungloBikingShop = () => {
     const handleDeleteClick = (id) => {
         if(addProductUser.find((product) => product.id === id)) {
             const findItem = addProductUser.find(product => product.id === id);
-            setTotalPrice(totalPrice - findItem.price);
+            setTotalPrice(totalPrice - (findItem.price * findItem.quantity));
             setAddProductUser(addProductUser.filter(product => product.id != id));
             setCurrentProduct(addProductUser[1]);
         } else {
@@ -56,15 +50,33 @@ const KedungloBikingShop = () => {
         }
     }
 
+    const handleCountQuantityProduct = (id) => {
+        if(addProductUser.find((product) => product.id === id)) {
+            const nextAddProductUser = addProductUser.map((product) => product.id === id ? {...product, quantity: product.quantity + 1} : product);
+            setAddProductUser(nextAddProductUser);
+            setCurrentProduct(nextAddProductUser.find((product) => product.id === id));
+        }
+    }
+
+    const handleDecrementQuantityProduct = (id) => {
+        const findSameItem = addProductUser.find((product) => product.id === id);
+        if(findSameItem.quantity <= 1) return;
+        if(findSameItem) {
+            const nextAddProductUser = addProductUser.map((product) => product.id === id ? {...product, quantity: product.quantity - 1} : product);
+            setAddProductUser(nextAddProductUser);
+            setCurrentProduct(nextAddProductUser.find((product) => product.id === id));
+        }
+    }
+
     useEffect(() => {
         if(addProductUser.length > 0) {
             const sum = addProductUser.reduce((acc, items) => {
                 const findCurrentItem = cartProducts.find((product) => product.id === items.id);
-                return acc + (items.price * findCurrentItem.quantity);
+                return acc + (items.quantity * findCurrentItem.price);
             }, 0);
             setTotalPrice(sum);
         }
-    }, [addProductUser]);
+    }, [addProductUser, currentProduct]);
 
     useEffect(() => {
         if(addProductUser.length == 0) {
@@ -78,13 +90,13 @@ const KedungloBikingShop = () => {
         <NavbarKedungloBikingShop />
         <CarousellContainer />
             <section className="flex flex-col gap-5 w-full px-5 bg-slate-300 justify-center items-center">
-                <SearchSection handleChangeSearchInput={handleChangeSearchInput} isPlaceholder="apa yang anda cari?">
+                <SearchSection query={query} setQuery={setQuery} isPlaceholder="apa yang anda cari?">
                     <div className="flex justify-center items-center relative">
                         <div ref={manyProduct} className="absolute -top-2 -right-3 w-5 h-5 scale-105 text-center rounded-full font-inter font-semibold bg-white z-8">{addProductUser.length}</div>
                         <i onClick={() => handleOpenShopping()} className="fa-solid fa-cart-shopping text-xl text-slate-700 hover:text-slate-900 cursor-pointer"></i>
                     </div>
                 </SearchSection>
-                <AllProducts>
+                <AllProducts setAddProductUser={setAddProductUser} query={query} cartProducts={cartProducts}>
                     <h1 className="font-inter p-2 ml-3 font-bold text-slate-900 capitalize text-2xl">sepeda balap shop</h1>
                     <ProductsBikeCard handleAddProduct={handleAddProduct} cartProducts={cartProducts}/>
                 </AllProducts>
@@ -130,12 +142,13 @@ const KedungloBikingShop = () => {
                                      {/* count wrapper */}
                                      <div className="flex justify-center items-center">
                                          {/* increment product */}
-                                         <button onClick={() => setCurrentProduct({...currentProduct, quantity: currentProduct.quantity + 1})} className="bg-slate-300 w-[32px] h-[32px] border-2 border-slate-400 text-center font-inter font-semibold text-slate-700 hover:bg-slate-400 hover:text-slate-100" type="button">+</button>
+                                         {/* <button onClick={() => setCurrentProduct({...currentProduct, quantity: currentProduct.quantity + 1})} className="bg-slate-300 w-[32px] h-[32px] border-2 border-slate-400 text-center font-inter font-semibold text-slate-700 hover:bg-slate-400 hover:text-slate-100" type="button">+</button> */}
+                                         <button onClick={() => handleCountQuantityProduct(currentProduct.id)}className="bg-slate-300 w-[32px] h-[32px] border-2 border-slate-400 text-center font-inter font-semibold text-slate-700 hover:bg-slate-400 hover:text-slate-100" type="button">+</button>
 
                                          <div className="w-[32px] h-[32px] flex justify-center items-center font-semibold font-inter">{currentProduct.quantity}</div>
 
                                          {/* decrement product */}
-                                         <button onClick={() => currentProduct.quantity > 1 ? setCurrentProduct({...currentProduct, quantity: currentProduct.quantity - 1}) : currentProduct.quantity} className="bg-slate-300 w-[32px] h-[32px] border-2 border-slate-400 text-center font-inter font-semibold text-slate-700 hover:bg-slate-400 hover:text-slate-100" type="button">-</button>
+                                         <button onClick={() => handleDecrementQuantityProduct(currentProduct.id)}className="bg-slate-300 w-[32px] h-[32px] border-2 border-slate-400 text-center font-inter font-semibold text-slate-700 hover:bg-slate-400 hover:text-slate-100" type="button">-</button>
                                      </div>
 
                                      {/* button buy and delete product wrapper */}
