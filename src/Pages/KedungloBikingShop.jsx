@@ -9,12 +9,20 @@ import {
   useTotalPrice,
   useTotalPriceDispatch,
 } from "../Context/TotalPriceContext";
+import ShoppingCart from "../components/Fragments/ShoppingCart";
+import Header from "../components/Elements/Header";
+import ButtonCloseShoppingCart from "../components/Elements/ButtonCloseShoppingCart";
+import ImageCurrentProduct from "../components/Fragments/ImageCurrentProduct";
+import DescriptionDetailProduct from "../components/Elements/DescriptionDetailProduct";
+import Button from "../components/Elements/Button";
+import WrapperItemPalette from "../components/Elements/WrapperItemPalette";
+import SetterQuantityProduct from "../components/Fragments/SetterQuantityProduct";
 const KedungloBikingShop = () => {
   const [addProductUser, setAddProductUser] = useState([]);
   const [currentProduct, setCurrentProduct] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const [query, setQuery] = useState("");
-  const manyProduct = useRef(null);
+
   const keranjang = useRef(null);
   const total = useTotalPrice();
   const dispatch = useTotalPriceDispatch;
@@ -97,14 +105,6 @@ const KedungloBikingShop = () => {
       setTotalPrice(sum);
     }
   }, [addProductUser, currentProduct]);
-
-  useEffect(() => {
-    if (addProductUser.length == 0) {
-      manyProduct.current.classList.add("hidden");
-    } else {
-      manyProduct.current.classList.replace("hidden", "block");
-    }
-  }, [addProductUser]);
   return (
     <main className="relative overflow-x-hidden">
       <NavbarKedungloBikingShop />
@@ -115,27 +115,17 @@ const KedungloBikingShop = () => {
           setQuery={setQuery}
           isPlaceholder="apa yang anda cari?"
         >
-          <div className="flex justify-center items-center relative">
-            <div
-              ref={manyProduct}
-              className="absolute -top-2 -right-3 w-5 h-5 scale-105 text-center rounded-full font-inter font-semibold bg-white z-8"
-            >
-              {addProductUser.length}
-            </div>
-            <i
-              onClick={() => handleOpenShopping()}
-              className="fa-solid fa-cart-shopping text-xl text-slate-700 hover:text-slate-900 cursor-pointer"
-            ></i>
-          </div>
+          <ShoppingCart
+            addProductUser={addProductUser}
+            handleOpenShopping={handleOpenShopping}
+          />
         </SearchSection>
         <AllProducts
           setAddProductUser={setAddProductUser}
           query={query}
           cartProducts={cartProducts}
         >
-          <h1 className="font-inter p-2 ml-3 font-bold text-slate-900 capitalize text-2xl">
-            sepeda balap shop
-          </h1>
+          <Header>sepeda balap shop</Header>
           <ProductsBikeCard
             handleAddProduct={handleAddProduct}
             cartProducts={cartProducts}
@@ -149,114 +139,77 @@ const KedungloBikingShop = () => {
       >
         <div className="w-[75%] max-w-[900px] bg-white border-2 border-slate-500/25 rounded-md shadow p-1 mx-auto my-10 scale-95 z-50">
           <div className="w-full h-[5px] relative">
-            <div
-              onClick={handleCloseKeranjang}
-              className="grid place-items-center w-[30px] h-[30px] bg-red-500 text-white font-semibold font-inter cursor-pointer absolute -top-4 -right-3 hover:bg-red-700 rounded-full"
-            >
-              X
-            </div>
+            <ButtonCloseShoppingCart
+              keranjang={keranjang}
+              onClose={handleCloseKeranjang}
+            />
           </div>
-          <h3 className="font-inter font-bold capitalize text-slate-900 text-2xl p-5">
-            keranjang anda
-          </h3>
+          <Header classname="font-inter font-bold capitalize text-slate-900 text-2xl p-5">
+            keranjang saya
+          </Header>
           <div className="flex flex-col">
             {currentProduct != null ? (
               <div className="flex justify-center items-center">
                 {/* image some product */}
-                <div className="w-[350px] h-[250px] ml-8 rounded-md overflow-hidden">
-                  <img
-                    className="w-full h-full object-cover"
-                    src={currentProduct.source}
-                    alt="product user"
-                  />
-                </div>
+                <ImageCurrentProduct
+                  alternative="product user"
+                  source={currentProduct.source}
+                />
+
+                {/* TODO */}
 
                 {/* detail some product */}
                 <div className="flex flex-col justify-center items-start gap-1 ml-5">
                   {/* price product */}
-                  <h1 className="text-slate-800 font-bold text-2xl font-inter my-1 ml-2">
+                  <Header classname="text-slate-800 font-bold text-2xl font-inter my-1 ml-2">
                     Rp{" "}
                     {currentProduct.price.toLocaleString("id-ID", {
                       styles: "currency",
                       currency: "IDR",
                     })}
-                  </h1>
+                  </Header>
 
                   {/* description product */}
-                  <div className="w-[70%] flex flex-col justify-center items-start ml-7">
-                    <h4 className="text-slate-800 font-semibold text-xl font-inter">
-                      {currentProduct.title}
-                    </h4>
-                    <p className="font-normal text-slate-700">
-                      {currentProduct.description}
-                    </p>
-                  </div>
+                  <DescriptionDetailProduct
+                    title={currentProduct.title}
+                    description={currentProduct.description}
+                  />
 
                   {/* color palette product */}
 
                   <div className="w-[90%] flex flex-col justify-between items-start gap-5 mt-2 ml-7">
-                    <div className="w-fit flex justify-center items-center gap-4 bg-slate-300 px-4 py-1 rounded-full">
-                      <div className="w-[20px] h-[20px] bg-red-500 rounded-full border transition-all duration-300 cursor-pointer hover:bg-red-700"></div>
-                      <div className="w-[20px] h-[20px] bg-green-500 rounded-full border transition-all duration-300 cursor-pointer hover:bg-green-700"></div>
-                      <div className="w-[20px] h-[20px] bg-blue-500 rounded-full border transition-all duration-300 cursor-pointer hover:bg-blue-700"></div>
-                      <div className="w-[20px] h-[20px] bg-emerald-500 rounded-full border transition-all duration-300 cursor-pointer hover:bg-emerald-700"></div>
-                    </div>
-
+                    <WrapperItemPalette />
                     <div className="flex w-full">
                       {/* count wrapper */}
-                      <div className="flex justify-center items-center">
-                        {/* increment product */}
-                        {/* <button onClick={() => setCurrentProduct({...currentProduct, quantity: currentProduct.quantity + 1})} className="bg-slate-300 w-[32px] h-[32px] border-2 border-slate-400 text-center font-inter font-semibold text-slate-700 hover:bg-slate-400 hover:text-slate-100" type="button">+</button> */}
-                        <button
-                          onClick={() =>
-                            handleCountQuantityProduct(currentProduct.id)
-                          }
-                          className="bg-slate-300 w-[32px] h-[32px] border-2 border-slate-400 text-center font-inter font-semibold text-slate-700 hover:bg-slate-400 hover:text-slate-100"
-                          type="button"
-                        >
-                          +
-                        </button>
-
-                        <div className="w-[32px] h-[32px] flex justify-center items-center font-semibold font-inter">
-                          {currentProduct.quantity}
-                        </div>
-
-                        {/* decrement product */}
-                        <button
-                          onClick={() =>
-                            handleDecrementQuantityProduct(currentProduct.id)
-                          }
-                          className="bg-slate-300 w-[32px] h-[32px] border-2 border-slate-400 text-center font-inter font-semibold text-slate-700 hover:bg-slate-400 hover:text-slate-100"
-                          type="button"
-                        >
-                          -
-                        </button>
-                      </div>
+                      <SetterQuantityProduct
+                        handleCountQuantityProduct={handleCountQuantityProduct}
+                        id={currentProduct.id}
+                        quantity={currentProduct.quantity}
+                        handleDecrementQuantityProduct={
+                          handleDecrementQuantityProduct
+                        }
+                      />
 
                       {/* button buy and delete product wrapper */}
                       <div className="w-full flex justify-between items-center gap-3 ml-2">
-                        <button
-                          className="w-1/2 bg-sky-500 px-2 py-1 font-inter capitalize text-slate-100 font-semibold text-md rounded-md transition-all duration-150 hover:bg-sky-700"
-                          type="button"
-                        >
+                        <Button classname="w-1/2 bg-sky-500 px-2 py-1 font-inter capitalize text-slate-100 font-semibold text-md rounded-md transition-all duration-150 hover:bg-sky-700">
                           buy
-                        </button>
-                        <button
+                        </Button>
+                        <Button
                           onClick={() => handleDeleteClick(currentProduct.id)}
-                          className="w-1/2 bg-red-500 px-2 py-1 font-inter capitalize text-slate-100 font-semibold text-md rounded-md transition-all duration-150 hover:bg-red-700"
-                          type="button"
+                          classname="w-1/2 bg-red-500 px-2 py-1 font-inter capitalize text-slate-100 font-semibold text-md rounded-md transition-all duration-150 hover:bg-red-700"
                         >
                           delete product
-                        </button>
+                        </Button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             ) : (
-              <h1 className="font-inter font-semibold text-slate-700 capitalize text-xl text-center my-7">
-                tidak ada produk!
-              </h1>
+              <Header classname="font-inter font-semibold text-slate-700 capitalize text-xl text-center my-7">
+                tidak ada product !
+              </Header>
             )}
 
             <div className="mt-5">
