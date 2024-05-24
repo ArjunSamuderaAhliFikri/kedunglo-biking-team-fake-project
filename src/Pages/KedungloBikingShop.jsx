@@ -14,9 +14,13 @@ import Header from "../components/Elements/Header";
 import ButtonCloseShoppingCart from "../components/Elements/ButtonCloseShoppingCart";
 import ImageCurrentProduct from "../components/Fragments/ImageCurrentProduct";
 import DescriptionDetailProduct from "../components/Elements/DescriptionDetailProduct";
-import Button from "../components/Elements/Button";
 import WrapperItemPalette from "../components/Elements/WrapperItemPalette";
 import SetterQuantityProduct from "../components/Fragments/SetterQuantityProduct";
+import WrapperButtonBuyDelete from "../components/Fragments/WrapperButtonBuyDelete";
+import TotalPriceDescription from "../components/Fragments/TotalPriceDescription";
+import ProductsCartUser from "../components/Fragments/ProductsCartUser";
+import ShopSection from "../components/Layouts/ShopSection";
+import DetailProduct from "../components/Layouts/DetailProduct";
 const KedungloBikingShop = () => {
   const [addProductUser, setAddProductUser] = useState([]);
   const [currentProduct, setCurrentProduct] = useState(null);
@@ -109,7 +113,7 @@ const KedungloBikingShop = () => {
     <main className="relative overflow-x-hidden">
       <NavbarKedungloBikingShop />
       <CarousellContainer />
-      <section className="flex flex-col gap-5 w-full px-5 bg-slate-300 justify-center items-center">
+      <ShopSection>
         <SearchSection
           query={query}
           setQuery={setQuery}
@@ -131,7 +135,7 @@ const KedungloBikingShop = () => {
             cartProducts={cartProducts}
           />
         </AllProducts>
-      </section>
+      </ShopSection>
 
       <div
         ref={keranjang}
@@ -156,27 +160,9 @@ const KedungloBikingShop = () => {
                   source={currentProduct.source}
                 />
 
-                {/* TODO */}
-
                 {/* detail some product */}
-                <div className="flex flex-col justify-center items-start gap-1 ml-5">
-                  {/* price product */}
-                  <Header classname="text-slate-800 font-bold text-2xl font-inter my-1 ml-2">
-                    Rp{" "}
-                    {currentProduct.price.toLocaleString("id-ID", {
-                      styles: "currency",
-                      currency: "IDR",
-                    })}
-                  </Header>
-
-                  {/* description product */}
-                  <DescriptionDetailProduct
-                    title={currentProduct.title}
-                    description={currentProduct.description}
-                  />
-
+                <DetailProduct currentProduct={currentProduct}>
                   {/* color palette product */}
-
                   <div className="w-[90%] flex flex-col justify-between items-start gap-5 mt-2 ml-7">
                     <WrapperItemPalette />
                     <div className="flex w-full">
@@ -191,20 +177,13 @@ const KedungloBikingShop = () => {
                       />
 
                       {/* button buy and delete product wrapper */}
-                      <div className="w-full flex justify-between items-center gap-3 ml-2">
-                        <Button classname="w-1/2 bg-sky-500 px-2 py-1 font-inter capitalize text-slate-100 font-semibold text-md rounded-md transition-all duration-150 hover:bg-sky-700">
-                          buy
-                        </Button>
-                        <Button
-                          onClick={() => handleDeleteClick(currentProduct.id)}
-                          classname="w-1/2 bg-red-500 px-2 py-1 font-inter capitalize text-slate-100 font-semibold text-md rounded-md transition-all duration-150 hover:bg-red-700"
-                        >
-                          delete product
-                        </Button>
-                      </div>
+                      <WrapperButtonBuyDelete
+                        handleDeleteClick={handleDeleteClick}
+                        id={currentProduct.id}
+                      />
                     </div>
                   </div>
-                </div>
+                </DetailProduct>
               </div>
             ) : (
               <Header classname="font-inter font-semibold text-slate-700 capitalize text-xl text-center my-7">
@@ -213,44 +192,13 @@ const KedungloBikingShop = () => {
             )}
 
             <div className="mt-5">
-              <div className="flex justify-between items-center">
-                <h3 className="font-inter font-semibold text-2xl capitalize text-slate-800 ml-4">
-                  your products :
-                </h3>
-                <h4 className="font-inter font-normal text-lg capitalize text-slate-800 mr-4">
-                  total price :{" "}
-                  <strong className="font-inter">
-                    Rp.{" "}
-                    {totalPrice.toLocaleString("id-ID", {
-                      styles: "currency",
-                      currency: "IDR",
-                    })}
-                  </strong>
-                </h4>
-              </div>
+              <TotalPriceDescription totalPrice={totalPrice} />
 
               {/* card product user */}
-              <div className="grid grid-flow-col auto-cols-max gap-3 px-4 py-2 mt-1 overflow-y-hidden overflow-x-auto">
-                {addProductUser.length > 0 ? (
-                  addProductUser.map((productUser) => (
-                    <div
-                      key={productUser.id}
-                      onClick={() => setCurrentProduct(productUser)}
-                      className="w-[120px] h-[180px] bg-red-500 rounded-md overflow-hidden transition-all duration-300 cursor-pointer hover:opacity-75 hover:scale-95"
-                    >
-                      <img
-                        className="w-full h-full object-cover"
-                        src={productUser.source}
-                        alt="product user"
-                      />
-                    </div>
-                  ))
-                ) : (
-                  <h3 className="translate-x-[85%] text-center capitalize font-inter text-slate-700 my-5">
-                    anda belum menambahkan produk apapun!
-                  </h3>
-                )}
-              </div>
+              <ProductsCartUser
+                addProductUser={addProductUser}
+                setCurrentProduct={setCurrentProduct}
+              />
             </div>
           </div>
         </div>
