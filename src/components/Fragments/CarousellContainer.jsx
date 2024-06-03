@@ -3,20 +3,19 @@ import ItemImageCarousell from "../Elements/ItemImageCarousell";
 const CarousellContainer = () => {
   const [position, setPosition] = useState(0);
   const carousell = useRef(null);
+  const moveCarousell = () => {
+    setInterval(() => {
+      setPosition(position + 25);
+      carousell.current.style.transform = `translateX(-${position}%)`;
+    }, 1000);
+  };
   useEffect(() => {
-    if (position > 75) {
-      setPosition(0);
-    }
-
-    if (position <= 75) {
-      setTimeout(() => {
-        setPosition(position + 25);
-      }, 3000);
-    }
-  }, [carousell.current, position]);
+    moveCarousell();
+  }, []);
   return (
     <div className="bg-red-500 w-full max-w-[85%] h-[250px] my-5 mx-auto rounded-md overflow-hidden">
       <div
+        ref={carousell}
         className={`-translate-x-[${position}%] w-[400%] h-full flex flex-row justify-center items-center transition-all duration-1000`}
       >
         <ItemImageCarousell source="../public/img/carousell-bike-1.jpg" />

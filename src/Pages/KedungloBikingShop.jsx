@@ -21,6 +21,7 @@ import TotalPriceDescription from "../components/Fragments/TotalPriceDescription
 import ProductsCartUser from "../components/Fragments/ProductsCartUser";
 import ShopSection from "../components/Layouts/ShopSection";
 import DetailProduct from "../components/Layouts/DetailProduct";
+import DetailProductsUser from "../components/Fragments/DetailProductsUser";
 const KedungloBikingShop = () => {
   const [addProductUser, setAddProductUser] = useState([]);
   const [currentProduct, setCurrentProduct] = useState(null);
@@ -30,7 +31,8 @@ const KedungloBikingShop = () => {
   const keranjang = useRef(null);
   const total = useTotalPrice();
   const dispatch = useTotalPriceDispatch;
-  const handleCloseKeranjang = () => {
+  const handleCloseKeranjang = (e) => {
+    e.stopPropagation();
     keranjang.current.classList.add("hidden");
   };
 
@@ -109,6 +111,17 @@ const KedungloBikingShop = () => {
       setTotalPrice(sum);
     }
   }, [addProductUser, currentProduct]);
+
+  useEffect(() => {
+    const handleCloseWindowCart = () => {
+      document.addEventListener("click", function (event) {
+        if (event.target.id) {
+          keranjang.current.classList.replace("block", "hidden");
+        }
+      });
+    };
+    return () => handleCloseWindowCart();
+  }, []);
   return (
     <main className="relative overflow-x-hidden">
       <NavbarKedungloBikingShop />
@@ -136,18 +149,18 @@ const KedungloBikingShop = () => {
           />
         </AllProducts>
       </ShopSection>
-
+      {/* TODO */}
+      {/* TODO */}
       <div
+        id={1}
         ref={keranjang}
-        className="transition-all duration-500 w-full h-full bg-slate-900/60 fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 overflow-hidden hidden"
+        className="top-0 left-0 w-full h-full bg-slate-900/50 shadow hidden fixed"
       >
-        <div className="w-[75%] max-w-[900px] bg-white border-2 border-slate-500/25 rounded-md shadow p-1 mx-auto my-10 scale-95 z-50">
-          <div className="w-full h-[5px] relative">
-            <ButtonCloseShoppingCart
-              keranjang={keranjang}
-              onClose={handleCloseKeranjang}
-            />
-          </div>
+        <div className="w-[75%] max-w-[900px] border-2 border-slate-500/25 rounded-md shadow p-1 mx-auto my-10 scale-95 z-50 bg-slate-100">
+          <ButtonCloseShoppingCart
+            keranjang={keranjang}
+            onClose={handleCloseKeranjang}
+          />
           <Header classname="font-inter font-bold capitalize text-slate-900 text-2xl p-5">
             keranjang saya
           </Header>
@@ -191,15 +204,11 @@ const KedungloBikingShop = () => {
               </Header>
             )}
 
-            <div className="mt-5">
-              <TotalPriceDescription totalPrice={totalPrice} />
-
-              {/* card product user */}
-              <ProductsCartUser
-                addProductUser={addProductUser}
-                setCurrentProduct={setCurrentProduct}
-              />
-            </div>
+            <DetailProductsUser
+              totalPrice={totalPrice}
+              addProductUser={addProductUser}
+              setCurrentProduct={setCurrentProduct}
+            />
           </div>
         </div>
       </div>
