@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import NavbarKedungloBikingShop from "../components/Fragments/NavbarKedungloBikingShop";
-import CarousellContainer from "../components/Fragments/CarousellContainer";
+import NavbarKedungloBikingShop from "../components/Layouts/NavbarKedungloBikingShop";
 import SearchSection from "../components/Layouts/SearchSection";
 import ProductsBikeCard from "../components/Elements/ProductsBikeCard";
 import AllProducts from "../components/Layouts/AllProducts";
@@ -13,24 +12,49 @@ import ShoppingCart from "../components/Fragments/ShoppingCart";
 import Header from "../components/Elements/Header";
 import ButtonCloseShoppingCart from "../components/Elements/ButtonCloseShoppingCart";
 import ImageCurrentProduct from "../components/Fragments/ImageCurrentProduct";
-import DescriptionDetailProduct from "../components/Elements/DescriptionDetailProduct";
 import WrapperItemPalette from "../components/Elements/WrapperItemPalette";
 import SetterQuantityProduct from "../components/Fragments/SetterQuantityProduct";
 import WrapperButtonBuyDelete from "../components/Fragments/WrapperButtonBuyDelete";
-import TotalPriceDescription from "../components/Fragments/TotalPriceDescription";
-import ProductsCartUser from "../components/Fragments/ProductsCartUser";
 import ShopSection from "../components/Layouts/ShopSection";
 import DetailProduct from "../components/Layouts/DetailProduct";
 import DetailProductsUser from "../components/Fragments/DetailProductsUser";
+import HeroMenu from "../components/Layouts/HeroMenu";
+import { handleSearchProducts } from "../js/cartProducts";
 const KedungloBikingShop = () => {
   const [addProductUser, setAddProductUser] = useState([]);
   const [currentProduct, setCurrentProduct] = useState(null);
   const [totalPrice, setTotalPrice] = useState(0);
   const [query, setQuery] = useState("");
-
+  const [loading, setLoading] = useState(false);
+  const inputElement = useRef();
   const keranjang = useRef(null);
+  const emptyProduct = useRef(null);
   const total = useTotalPrice();
   const dispatch = useTotalPriceDispatch;
+  const searchProducts = handleSearchProducts(cartProducts, query);
+  console.log(searchProducts);
+
+  const handleChangeQuery = (inputText) => {
+    if (!inputText) {
+      return;
+    } else {
+      setLoading(true);
+      setQuery(inputText);
+      emptyProduct.current.style.display = "none";
+    }
+
+    setTimeout(() => {
+      setLoading(false);
+    }, 3000);
+  };
+
+  const handleOnChangeQuery = (setInput, event) => {
+    setInput(event);
+    if (loading == false || searchProducts == [] || loading == true) {
+      emptyProduct.current.style.display = "none";
+    }
+  };
+
   const handleCloseKeranjang = (e) => {
     e.stopPropagation();
     keranjang.current.classList.add("hidden");
@@ -122,15 +146,18 @@ const KedungloBikingShop = () => {
     };
     return () => handleCloseWindowCart();
   }, []);
+
   return (
     <main className="relative overflow-x-hidden">
       <NavbarKedungloBikingShop />
-      <CarousellContainer />
+      <HeroMenu />
       <ShopSection>
         <SearchSection
-          query={query}
-          setQuery={setQuery}
+          handleOnChangeQuery={handleOnChangeQuery}
+          loading={loading}
+          handleChangeQuery={handleChangeQuery}
           isPlaceholder="apa yang anda cari?"
+          ref={inputElement}
         >
           <ShoppingCart
             addProductUser={addProductUser}
@@ -138,6 +165,8 @@ const KedungloBikingShop = () => {
           />
         </SearchSection>
         <AllProducts
+          ref={emptyProduct}
+          loading={loading}
           setAddProductUser={setAddProductUser}
           query={query}
           cartProducts={cartProducts}
