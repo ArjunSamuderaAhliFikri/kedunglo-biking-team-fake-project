@@ -7,7 +7,7 @@ const SetterQuantityProduct = ({
   handleDecrementQuantityProduct,
 }) => {
   return (
-    <div className="flex justify-center items-center">
+    <div className="flex items-center justify-center mr-6">
       {/* increment product */}
       <Button
         onClick={() => handleCountQuantityProduct(id)}

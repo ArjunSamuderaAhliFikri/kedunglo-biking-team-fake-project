@@ -9,13 +9,16 @@ const SearchSection = forwardRef((props, ref) => {
     handleOnChangeQuery,
     loading,
   } = props;
+  const handleSubmit = (event) => {
+    event.preventDefault();
+  };
   return (
     <div className="flex justify-center items-center gap-7 mt-5 p-2">
-      <form>
+      <form onSubmit={handleSubmit}>
         <input
           ref={ref}
           value={inputText}
-          className="w-[400px] px-3 py-[4px] rounded-tl-md rounded-bl-md outline-none placeholder:font-inter placeholder:capitalize placeholder:text-sm placeholder:opacity-60"
+          className="w-[300px] xl:w-[400px] px-3 py-[4px] rounded-tl-md rounded-bl-md outline-none placeholder:font-inter placeholder:capitalize placeholder:text-sm placeholder:opacity-60"
           type="text"
           placeholder={isPlaceholder}
           onChange={(e) => handleOnChangeQuery(setInputText, e.target.value)}

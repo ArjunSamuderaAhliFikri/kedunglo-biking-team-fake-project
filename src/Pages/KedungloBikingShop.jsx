@@ -32,7 +32,6 @@ const KedungloBikingShop = () => {
   const total = useTotalPrice();
   const dispatch = useTotalPriceDispatch;
   const searchProducts = handleSearchProducts(cartProducts, query);
-  console.log(searchProducts);
 
   const handleChangeQuery = (inputText) => {
     if (!inputText) {
@@ -50,7 +49,7 @@ const KedungloBikingShop = () => {
 
   const handleOnChangeQuery = (setInput, event) => {
     setInput(event);
-    if (loading == false || searchProducts == [] || loading == true) {
+    if (loading == false || searchProducts == []) {
       emptyProduct.current.style.display = "none";
     }
   };
@@ -195,7 +194,7 @@ const KedungloBikingShop = () => {
           </Header>
           <div className="flex flex-col">
             {currentProduct != null ? (
-              <div className="flex justify-center items-center">
+              <div className="flex flex-col xl:flex-row justify-center items-center">
                 {/* image some product */}
                 <ImageCurrentProduct
                   alternative="product user"
@@ -205,9 +204,9 @@ const KedungloBikingShop = () => {
                 {/* detail some product */}
                 <DetailProduct currentProduct={currentProduct}>
                   {/* color palette product */}
-                  <div className="w-[90%] flex flex-col justify-between items-start gap-5 mt-2 ml-7">
+                  <div className="w-[90%] flex flex-col justify-between items-center xl:items-start gap-5 mt-2 ml-7">
                     <WrapperItemPalette />
-                    <div className="flex w-full">
+                    <div className="flex xl:flex-row flex-col w-full">
                       {/* count wrapper */}
                       <SetterQuantityProduct
                         handleCountQuantityProduct={handleCountQuantityProduct}

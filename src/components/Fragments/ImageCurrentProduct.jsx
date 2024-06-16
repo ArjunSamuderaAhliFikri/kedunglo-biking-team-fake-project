@@ -1,6 +1,6 @@
 const ImageCurrentProduct = ({ source, alternative }) => {
   return (
-    <div className="w-[350px] h-[250px] ml-8 rounded-md overflow-hidden">
+    <div className="flex justify-center items-center xl:w-[350px] xl:h-[250px] h-[175px] w-[275px] xl:ml-8 rounded-md overflow-hidden">
       <img
         className="w-full h-full object-cover"
         src={source}

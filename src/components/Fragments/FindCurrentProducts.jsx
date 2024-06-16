@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useRef, useState } from "react";
 import CardProduct from "./CardProduct";
 import { handleSearchProducts } from "../../js/cartProducts";
+import LoadingComponent from "../Elements/LoadingComponent";
 const FindCurrentProducts = forwardRef((props, ref) => {
   const { query, cartProducts, handleAddCurrentProduct, loading } = props;
   const searchProducts = handleSearchProducts(cartProducts, query);
@@ -32,32 +33,17 @@ const FindCurrentProducts = forwardRef((props, ref) => {
     });
   };
 
-  // useEffect(() => {
-  //   const handleLoading = () => {
-  //     try {
-  //       loadingSearch(searchProducts);
-  //       setLoading(true);
-  //       alert("true");
-  //     } catch (err) {
-  //       setLoading(false);
-  //       alert(new Error("product tidak ada"));
-  //     } finally {
-  //       setLoading(false);
-  //       alert("searching product is done");
-  //     }
-  //   };
-
-  //   return () => handleLoading();
-  // }, [searchProducts]);
-
   return (
     <>
-      {loading == true && (
-        <div className="text-center text-slate-600 capitalize font-semibold text-xl">
-          loading...
-        </div>
-      )}
-      <div ref={ref}>{loading ? "" : "product tidak ada!"}</div>
+      {loading == true && <LoadingComponent />}
+      <div
+        ref={ref}
+        className={`${
+          loading == true && "opacity-0"
+        } bg-[#F64C18] text-slate-100 rounded-md shadow mx-auto text-center p-3 font-semibold capitalize`}
+      >
+        {loading ? null : "product tidak ada!"}
+      </div>
       {!loading &&
         searchProducts !== undefined &&
         searchProducts.length > 0 && (

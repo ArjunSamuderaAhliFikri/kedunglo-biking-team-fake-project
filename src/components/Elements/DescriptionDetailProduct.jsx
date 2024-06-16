@@ -1,11 +1,13 @@
 import Header from "./Header";
 const DescriptionDetailProduct = ({ title, description }) => {
   return (
-    <div className="w-[70%] flex flex-col justify-center items-start ml-7">
-      <Header classname="text-slate-800 font-semibold text-xl font-inter">
+    <div className="w-[70%] flex flex-col justify-center items-center xl:items-start">
+      <Header classname="text-xl font-semibold text-center text-slate-800 font-inter xl:text-left">
         {title}
       </Header>
-      <p className="font-normal text-slate-700">{description}</p>
+      <p className="font-normal text-center text-slate-700 xl:text-left">
+        {description}
+      </p>
     </div>
   );
 };

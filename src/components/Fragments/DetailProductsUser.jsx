@@ -8,7 +8,10 @@ const DetailProductsUser = ({
 }) => {
   return (
     <div className="mt-5">
-      <TotalPriceDescription totalPrice={totalPrice} />
+      <TotalPriceDescription
+        totalPrice={totalPrice}
+        addProductUser={addProductUser}
+      />
 
       {/* card product user */}
       <ProductsCartUser

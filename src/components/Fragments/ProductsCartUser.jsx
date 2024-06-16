@@ -12,7 +12,7 @@ const ProductsCartUser = ({ addProductUser, setCurrentProduct }) => {
           />
         ))
       ) : (
-        <Header classname="translate-x-[85%] text-center capitalize font-inter text-slate-700 my-5">
+        <Header classname="xl:translate-x-[85%] text-center capitalize font-inter text-slate-700 my-5">
           anda belum menambahkan produk apapun!
         </Header>
       )}

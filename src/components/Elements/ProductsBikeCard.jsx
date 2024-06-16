@@ -1,7 +1,7 @@
 import CardProduct from "../Fragments/CardProduct";
 const ProductsBikeCard = ({ cartProducts, handleAddProduct }) => {
   return (
-    <div className="grid grid-flow-col auto-cols-[20%] 2xl:auto-cols-[15%] 2xl:gap-5 gap-2 overflow-x-scroll w-full p-2 scale-95">
+    <div className="grid grid-flow-col auto-cols-[65%] md:auto-cols-[30%] xl:auto-cols-[20%] 2xl:auto-cols-[15%] 2xl:gap-5 gap-2 overflow-x-scroll w-full p-2 scale-95">
       {cartProducts.map((product) => (
         <div key={product.id} className="group w-full overflow-hidden">
           <div className="flex flex-col justify-center items-center bg-slate-200 w-full max-w-[250px] rounded-md overflow-hidden transition-all duration-150 group-hover:cursor-pointer group-hover:scale-95 group-hover:opacity-80">
